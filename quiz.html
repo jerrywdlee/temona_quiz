@@ -27,20 +27,11 @@
     });
 		</script>
 		<link rel="stylesheet" href="css/quiz.css"/>
-		<!--
-		<link rel="stylesheet" href="jquery.mobile-1.1.2/jquery.mobile.theme-1.1.2.min.css" />
-		<link rel="stylesheet" href="jquery.mobile-1.1.2/jquery.mobile.structure-1.1.2.min.css" />
-		<script src="jquery.mobile-1.1.2/jquery.mobile-1.1.2.min.js"></script>
-		<script src="jquery-1.7.2.min.js"></script>
-		-->
 
 
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
-		<!--
-		<link rel="stylesheet" href="themes/my-theme.min.css" />
-		<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
-		-->
+		<!--my theme-->
 		<link rel="stylesheet" href="css/themes/temona_01.css" />
 		<link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
 
@@ -54,9 +45,12 @@
 		<!--  ============================ページ区切り[スタート]============================ -->
 		<div data-role="page" id="topPage" >
 			<div data-role="header">
-				<h1>TEMONA Quiz</h1>
+				<a href="#" class="requestfullscreen" data-icon="info" data-rel="dialog" >全画面</a>
 
+				<h1>TEMONA Quiz</h1>
+				<a href="#scorePage" data-icon="info" data-rel="dialog" >ランク</a>
 				<div data-role="navbar" data-iconpos="left">
+
 					<ul>
 						<li><a href="#scorePage" data-icon="info" data-rel="dialog" >正解率</a></li>
 						<!--
