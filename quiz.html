@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja" manifest="quiz.appcache">
+<!-- キャッシュを読み込む -->
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<!-- http://stackoverflow.com/questions/32453806/uncaught-securityerror-failed-to-execute-replacestate-on-history-cannot-be -->
+		<script>
+    $(document).bind('mobileinit',function(){
+        $.mobile.changePage.defaults.changeHash = false;
+        $.mobile.hashListeningEnabled = false;
+        $.mobile.pushStateEnabled = false;
+    });
+		</script>
+		<link rel="stylesheet" href="css/quiz.css"/>
+		<!--
+		<link rel="stylesheet" href="jquery.mobile-1.1.2/jquery.mobile.theme-1.1.2.min.css" />
+		<link rel="stylesheet" href="jquery.mobile-1.1.2/jquery.mobile.structure-1.1.2.min.css" />
+		<script src="jquery.mobile-1.1.2/jquery.mobile-1.1.2.min.js"></script>
+		<script src="jquery-1.7.2.min.js"></script>
+		-->
+
+
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+		<link rel="stylesheet" href="themes/my-theme.min.css" />
+		<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+
+		<script src="js/custom-scripting.js"></script>
+
+		<script src="js/quiz.js"></script>
+		<title>quiz47</title>
+	</head>
+	<body>
+		<!--  =====▽▽この下にページごとの処理を記述します▽▽===== -->
+		<!--  ============================ページ区切り[スタート]============================ -->
+		<div data-role="page" id="topPage" >
+			<div data-role="header">
+				<h1>Quiz47</h1>
+
+				<div data-role="navbar" data-iconpos="left">
+					<ul>
+						<li><a href="#scorePage" data-icon="info" data-rel="dialog" >正解率</a></li>
+						<li><a href="#scorePage" data-icon="info" data-rel="dialog" >正解率</a></li>
+						<li><a href="#scorePage" data-icon="info" data-rel="dialog" >正解率</a></li>
+
+
+						<!-- 五つ以内は同じ行 -->
+					</ul>
+				</div>
+
+			</div>
+			<div data-role="content">
+				<div style="text-align:center;">
+
+					<h1>47都道府県クイズ</h1>
+					<img src="images/japan.gif" style="width: 200px">
+				</div>
+				<!--
+				<a data-role="button" href="#questionPage"　 data-mini="true"	data-inline="true">スタート</a>
+				<a data-role="button" href="#questionPage"  data-inline="true" data-mini="true">スタート</a>
+
+				<div data-role="controlgroup" data-type="horizontal">
+
+					<a data-role="button" href="#questionPage">スタート</a>
+					<a data-role="button" href="#questionPage" >スタート</a>
+					<a data-role="button" href="#questionPage" >スタート</a>
+					<a data-role="button" href="#questionPage" >スタート</a>
+
+				</div>
+
+				<div data-role="controlgroup" >
+
+					<a data-role="button" href="#questionPage">スタート</a>
+					<a data-role="button" href="#questionPage" >スタート</a>
+				</div>
+				-->
+				<ul data-role="listview" data-inset="true" id="questionList"　 data-type="horizontal">
+				<!-- data-inset="true" は左右空白を残す -->
+					<li><a href="#questionPage" style="font-size: 2em;text-align: center">スタート</a>
+					<!--
+					<li><a data-role="button" href="#questionPage"　 data-mini="true"　data-inline="true">スタート</a>
+					<li><a data-role="button" href="#questionPage"　 data-mini="true"　data-inline="true">スタート</a>
+					-->
+				</ul>
+
+
+			</div>
+			<div data-role="footer">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#scorePage" data-icon="info" data-rel="dialog">正解率</a></li>
+						<li><a href="#scorePage" data-icon="star" data-rel="dialog">正解率</a></li>
+						<li><a href="#scorePage" data-icon="grid" data-rel="dialog">正解率</a></li>
+						<li><a href="#scorePage" data-icon="serch" data-rel="dialog">正解率</a></li>
+						<li><a href="#scorePage" data-icon="home" data-rel="dialog">正解率</a></li>
+						<!-- 五つ以内は同じ行 -->
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!--  ============================ページ区切り[問題]============================ -->
+		<div data-role="page" id="questionPage">
+			<div data-role="header">
+				<a href="#topPage" data-icon="home">トップ</a>
+				<h1>問題</h1>
+				<a href="#topPage" data-icon="home">トップ2</a>
+			</div>
+			<div data-role="content">
+				<h1 style="text-align:center;">
+					次の中で<br />
+					面積が<br />
+					一番広いのは？
+				</h1>
+				<ul data-role="listview" data-inset="true" id="questionList">
+				<!-- data-inset="true" は左右空白を残す -->
+					<li><a href="#answerPage" id="1"></a>
+					<li><a href="#answerPage" id="2"></a>
+					<li><a href="#answerPage" id="3"></a>
+				</ul>
+			</div>
+			<div data-role="footer">
+				<h6>クイズ</h6>
+			</div>
+		</div>
+		<!--  ============================ページ区切り[解答]============================ -->
+		<div data-role="page" id="answerPage">
+			<div data-role="header">
+				<a href="#topPage" data-icon="home">トップ</a>
+				<h1>解答</h1>
+			</div>
+			<div data-role="content">
+				<h1 style="text-align:center;" id="judge"></h1>
+
+				<table style="font-size:1.5em">
+					<tr>
+						<td>1位:
+						<td id="todofuken1">
+						<td class="areaSize" id="areaSize1">
+					<tr>
+						<td>2位:
+						<td id="todofuken2">
+						<td class="areaSize" id="areaSize2">
+					<tr>
+						<td>3位:
+						<td id="todofuken3">
+						<td class="areaSize" id="areaSize3">
+				</table>
+				<p>
+					<a data-role="button" id="nextButton" href="#questionPage">
+						次の問題
+					</a>
+			</p>
+			</div>
+		</div>
+		<!--  ============================ページ区切り[正解率]============================ -->
+		<div data-role="page" id="scorePage">
+
+			<div data-role="header">
+				<h1>正解率</h1>
+			</div>
+
+			<div data-role="content">
+				<table>
+					<tr>
+						<td style="width: 6em;">解答数</td>
+						<td id="totalQuestion"></td>
+					</tr>
+					<tr>
+						<td>正解数</td>
+						<td id="correctAnswer"></td>
+					</tr>
+					<tr>
+						<td>正解率</td>
+						<td id="correctRatio"></td>
+					</tr>
+				</table>
+				<a data-role="button" href="#topPage">
+					閉じる
+				</a>
+			</div>
+		</div>
+		<!--  ===================================================================================== -->
+	</body>
+
+</html>
