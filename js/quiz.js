@@ -48,8 +48,8 @@ $(document).on("pageinit", "#questionPage", function(){
    //画面表示時の処理
     $("#questionPage").on("pageshow", function() {
         var randNum = new Array(3);
-         timeCount() ;
-         setInterval(function(){showTime();}, 500);
+         timeCount() ;//セットタイマー
+         setInterval(function(){showTime();}, 500);//時間表示
         //0から46までの重複のない整数を3つ取得
         do{
             for(var i = 0; i < randNum.length ; i++){
