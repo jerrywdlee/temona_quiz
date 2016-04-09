@@ -1,35 +1,17 @@
 // ===========================================
-// 47都道府県クイズ JavaScript
+// クイズテンプレート
 // ===========================================
 
 //  ============アプリ共通変数の定義============
 
-//グローバルオブジェクト（空オブジェクト）
-var MYQUIZ = {};
-
-//都道府県データ（名称、面積(平方km)）
-MYQUIZ.todofuken = [
-    ["北海道", "83457"],["青森県", "9644"],  ["岩手県", "15279"],
-    ["宮城県", "7286"], ["秋田県", "11636"], ["山形県", "9323"],
-    ["福島県", "13783"],["茨城県", "6096"],  ["栃木県", "6408"],
-    ["群馬県", "6363"], ["埼玉県", "3797"],  ["千葉県", "5157"],
-    ["東京都", "2188"], ["神奈川県", "2416"],["新潟県", "12584"],
-    ["富山県", "4248"], ["石川県", "4186"],  ["福井県", "4190"],
-    ["山梨県", "4465"], ["長野県", "13562"], ["岐阜県", "10621"],
-    ["静岡県", "7780"], ["愛知県", "5165"],  ["三重県", "5777"],
-    ["滋賀県", "4017"], ["京都府", "4613"],  ["大阪府", "1898"],
-    ["兵庫県", "8396"], ["奈良県", "3691"],  ["和歌山県","4726"],
-    ["鳥取県", "3507"], ["島根県", "6708"],  ["岡山県", "7113"],
-    ["広島県", "8479"], ["山口県", "6113"],  ["徳島県", "4147"],
-    ["香川県", "1877"], ["愛媛県", "5678"],  ["高知県", "7105"],
-    ["福岡県", "4977"], ["佐賀県", "2440"],  ["長崎県", "4105"],
-    ["熊本県", "7405"], ["大分県", "6340"],  ["宮崎県", "7736"],
-    ["鹿児島県","9189"],["沖縄県", "2276"]
-];
-
+quiz_num = 2;//出そうとする問題の数、問題総数超えてはならない
 quiz_text = [];
 $(document).ready(function(){
   quiz_text = creatQuiz(); // in create_quiz.js
+  shuffle(quiz_text);//問題をシャフル
+  if (quiz_num <= 0||quiz_num > quiz_text.length) {
+    quiz_num = quiz_text.length;
+  }
 });
 
 
@@ -42,11 +24,11 @@ if(!localStorage.totalQuestion){
 
 //  ============ページ区切り[問題]============
 $(document).on("pageinit", "#questionPage", function(){
-    if (!timer) {
-      timeCount();//多重タイマー防止
-    }
    //画面表示時の処理
     $("#questionPage").on("pageshow", function() {
+        if (!timer) {
+          timeCount();//多重タイマー防止
+        }
         var randNum = new Array(3);
          setInterval(function(){showTime();}, 500);//時間表示
          if (!sessionStorage.quiz_id||sessionStorage.quiz_id >= quiz_text.length) {
@@ -60,6 +42,7 @@ $(document).on("pageinit", "#questionPage", function(){
          }else {
            $(".quiz_img").attr("src","./img/vietnam.png");
          }
+         shuffle(tempQuiz.choices);//選択肢をシャッフル
          $("#1").html(tempQuiz.choices[0]);
          $("#2").html(tempQuiz.choices[1]);
          $("#3").html(tempQuiz.choices[2]);
@@ -93,15 +76,12 @@ $(document).on("pageinit", "#answerPage", function(){
       //問題の前進
       sessionStorage.quiz_id++;
       //最後の問題で
-      if (sessionStorage.quiz_id == quiz_text.length) {
-        $("#nextButton").html("スコア").attr("href","#scorePage")
+      if (localStorage.totalQuestion == quiz_num) {
+        $("#nextButton").html("スコア").attr("href","#scorePage").attr("data-rel","dialog")
       }
     });
 });
-//2次元配列ソート(並べ替え)用の関数
-MYQUIZ.arraySort = function(a, b){
-    return b[1] - a[1];//array[][]の二番目を大きい順で並び替え
-}
+
 //  ============ページ区切り[正解率]============
 $(document).on("pageinit", "#scorePage", function(){
    //画面表示時の処理
@@ -118,7 +98,7 @@ $(document).on("pageinit", "#scorePage", function(){
     //リセットのロジック
     $("#resetBtn").on("click",function(){
         resetLocalStorage();//点数のりせっと
-        resetSessionStorage();
+        //resetSessionStorage();
         timeStop();//タイマーのリセット
         $("#totalQuestion").html(localStorage.totalQuestion);
         $("#correctAnswer").html(localStorage.correctAnswer);
