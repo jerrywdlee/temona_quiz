@@ -12,6 +12,10 @@ $(document).ready(function(){
   if (quiz_num <= 0||quiz_num > quiz_text.length) {
     quiz_num = quiz_text.length;
   }
+  //念のため一回リセット
+  resetLocalStorage();//点数のりせっと
+  resetSessionStorage();
+  timeStop();//タイマーのリセット
 });
 
 
@@ -76,7 +80,7 @@ $(document).on("pageinit", "#answerPage", function(){
       //問題の前進
       sessionStorage.quiz_id++;
       //最後の問題で
-      if (localStorage.totalQuestion == quiz_num) {
+      if (localStorage.totalQuestion >= quiz_num) {
         $("#nextButton").html("スコア").attr("href","#scorePage").attr("data-rel","dialog")
       }
     });
@@ -92,8 +96,11 @@ $(document).on("pageinit", "#scorePage", function(){
        $("#correctRatio").html(ratio + "%");
        $("#timeUsed").html(showTime(localStorage.timeUsed));
        // ボタンの処理
-       $("#resetBtn").show();
+       $("#resetBtn").hide();
        $("#returnBtn").hide();
+       setTimeout(function() {
+         $("#resetBtn").show();
+       },1000)
     });
     //リセットのロジック
     $("#resetBtn").on("click",function(){
@@ -107,15 +114,6 @@ $(document).on("pageinit", "#scorePage", function(){
         $("#timeUsed").html(showTime(localStorage.timeUsed));
         $(this).hide();
         $("#returnBtn").show();
-        //閉じるボタンに変身、早すぎはいかん
-        //setTimeout(function() {
-          //$(this).html("閉じる").attr("id","").attr("href","#topPage")
-        //},500)
-
-        //window.location = "http://www.google.com";
-        //$("body").pagecontainer( "change", "#scorePage", { role: "dialog",reload:"true"} );
-
-        //change("#scorePage2")
     })
 });
 
