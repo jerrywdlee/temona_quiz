@@ -48,7 +48,8 @@ $(document).on("pageinit", "#questionPage", function(){
    //画面表示時の処理
     $("#questionPage").on("pageshow", function() {
         var randNum = new Array(3);
-
+         timeCount() ;
+         setInterval(function(){showTime();}, 500);
         //0から46までの重複のない整数を3つ取得
         do{
             for(var i = 0; i < randNum.length ; i++){
@@ -147,41 +148,40 @@ function shuffle(array){
     array[num_02] = temp;
   }
 }
-
+//localStorageを空に
 function resetLocalStorage() {
   //alert("clear")
   //localStorage.clear();
-  var json_text = creatQuiz();
-  alert(json_text[1].ans)
-  alert(json_text[1].ans == json_text[1].choices[2])
-  alert(json_text[1].ans == json_text[1].choices[1])
+  //var quiz_text = creatQuiz();
+  //alert(quiz_text[1].ans)
+  //alert(quiz_text[1].ans == quiz_text[1].choices[2])
+  //alert(quiz_text[1].ans == quiz_text[1].choices[1])
   localStorage.totalQuestion = 0;
   localStorage.correctAnswer = 0;
   localStorage.timeUsed = 0;
 }
 
-
-quiz_text =
-[
-  {
-    "quiz_id" : 1,
-    "text" : "これはどこの国の国旗ですか？",
-    "image" : "vietnam.png",
-    "choices" : ["ベトナム","北朝鮮","キューバ"],
-    "ans" : "ベトナム"
-  },
-  {
-    "quiz_id" : 2,
-    "text" : "これはどこの国の国旗ですか？",
-    "image" : "cuba.png",
-    "choices" : ["ベトナム","北朝鮮","キューバ"],
-    "ans" : "キューバ"
-  },
-  {
-    "quiz_id" : 2,
-    "text" : "これはどこの国の国旗ですか？",
-    "image" : "soveit.png",
-    "choices" : ["ベトナム","ソ連","中国"],
-    "ans" : "ソ連"
+var timer
+function timeCount() {
+  if (!localStorage.timeUsed) {
+    localStorage.timeUsed = 0;
   }
-];
+  timer = setInterval(function(){
+    localStorage.timeUsed++;
+  }, 1000);
+}
+
+function timeStop(){
+  clearInterval(timer);
+}
+
+function showTime() {
+  var sec = parseInt(localStorage.timeUsed%60);
+  var min = parseInt(localStorage.timeUsed/60);
+  var timeStr = checkTime(min)+":"+checkTime(sec);
+  $(".timer").html(timeStr);
+}
+function checkTime(i) {
+  if (i<10){i="0" + i}
+    return i
+}
