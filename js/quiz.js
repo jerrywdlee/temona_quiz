@@ -51,11 +51,13 @@ $(document).on("pageinit", "#questionPage", function(){
         var randNum = new Array(3);
          timeCount() ;//セットタイマー
          setInterval(function(){showTime();}, 500);//時間表示
-         if (!sessionStorage.quiz_id||(sessionStorage.quiz_id+1) === quiz_text.length) {
+         if (!sessionStorage.quiz_id||sessionStorage.quiz_id >= quiz_text.length) {
            sessionStorage.quiz_id = 0; //もしクイズがなしまたはクイズが終わりのとき、一から繰り返す
          }
          var tempQuiz = quiz_text[sessionStorage.quiz_id];
          sessionStorage.ans = tempQuiz.ans;//set answer
+         $("#quiz_text").html(tempQuiz.text);
+         $(".quiz_img").attr("src","./img/quiz/"+tempQuiz.image);
          $("#1").html(tempQuiz.choices[0]);
          $("#2").html(tempQuiz.choices[1]);
          $("#3").html(tempQuiz.choices[2]);
@@ -83,8 +85,9 @@ $(document).on("pageinit", "#questionPage", function(){
     $("#questionList a").on("click", function() {
         var selectedAns = $(this).html();
         sessionStorage.selectedAns = selectedAns;
-        alert(sessionStorage.selectedAns);
-        alert(sessionStorage.selectedAns == sessionStorage.ans)
+
+        //alert(sessionStorage.selectedAns);
+        //alert(sessionStorage.selectedAns == sessionStorage.ans)// ===はfalse
     });
     /*
     //都道府県名の選択時の処理
@@ -96,6 +99,7 @@ $(document).on("pageinit", "#questionPage", function(){
     */
 });
 
+/*
 //配列内の値の重複を確認
 MYQUIZ.isDuplicate = function(array){
     array.sort();
@@ -104,11 +108,26 @@ MYQUIZ.isDuplicate = function(array){
     }
     return false;
 }
+*/
 //  ============ページ区切り[解答]============
 $(document).on("pageinit", "#answerPage", function(){
 
     //画面表示時の処理
     $("#answerPage").on("pageshow", function() {
+      //正誤の判定と表示
+      if(sessionStorage.selectedAns == sessionStorage.ans){
+          $("#judge").html("正解").css("color","green")/*.css("font-size","2em")*/;
+          localStorage.correctAnswer++;
+      }else{
+          $("#judge").html("ハズレ").css("color","red")/*.css("font-size","0.2em")*/;
+      }
+      $("#ans").html(sessionStorage.ans);
+      //総解答数の更新
+      localStorage.totalQuestion++;
+      //問題の前進
+      sessionStorage.quiz_id++;
+
+      /*
         var selectedNum = sessionStorage.selectedNumber;
         var randNum = new Array(3);
         randNum[0] = sessionStorage.randNum1;
@@ -124,10 +143,10 @@ $(document).on("pageinit", "#answerPage", function(){
         questionData.sort(MYQUIZ.arraySort);
         //正誤の判定と表示
         if(questionData[0][0] === MYQUIZ.todofuken[selectedNum][0]){
-            $("#judge").html("正解").css("color","green")/*.css("font-size","2em")*/;
+            $("#judge").html("正解").css("color","green");
             localStorage.correctAnswer++;
         }else{
-            $("#judge").html("ハズレ").css("color","red")/*.css("font-size","0.2em")*/;
+            $("#judge").html("ハズレ").css("color","red");
         }
 
         //ランキング表示
@@ -135,8 +154,8 @@ $(document).on("pageinit", "#answerPage", function(){
             $("#todofuken" + (i+1) ).html(questionData[i][0]);
             $("#areaSize" + (i+1) ).html(questionData[i][1] + "平方Km");
         }
-        //総解答数の更新
-        localStorage.totalQuestion++;
+        */
+
     });
 });
 //2次元配列ソート(並べ替え)用の関数

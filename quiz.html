@@ -84,12 +84,9 @@
 				<a href="#topPage" data-icon="home">トップ2</a>
 			</div>
 			<div data-role="content" style="text-align:center;">
-				<h1 style="text-align:center;">
-					次の中で<br />
-					面積が<br />
-					一番広いのは？
+				<h1 style="text-align:center;" id="quiz_text">
 				</h1>
-				<img src="img/vietnam.png" style="width: 350px">
+				<img src="img/vietnam.png" style="height:240px" class="quiz_img">
 				<ul data-role="listview" data-inset="true" id="questionList">
 				<!-- data-inset="true" は左右空白を残す -->
 					<li><a href="#answerPage" id="1"></a>
@@ -107,23 +104,11 @@
 				<a href="#topPage" data-icon="home">トップ</a>
 				<h1 class="timer">解答</h1>
 			</div>
-			<div data-role="content">
+			<div data-role="content" style="text-align:center;">
 				<h1 style="text-align:center;" id="judge"></h1>
+				<img src="img/vietnam.png" style="height: 240px" class="quiz_img">
+				<h3 >正解：<span id="ans"></span></h3>
 
-				<table style="font-size:1.5em">
-					<tr>
-						<td>1位:
-						<td id="todofuken1">
-						<td class="areaSize" id="areaSize1">
-					<tr>
-						<td>2位:
-						<td id="todofuken2">
-						<td class="areaSize" id="areaSize2">
-					<tr>
-						<td>3位:
-						<td id="todofuken3">
-						<td class="areaSize" id="areaSize3">
-				</table>
 				<p>
 					<a data-role="button" id="nextButton" href="#questionPage">
 						次の問題
@@ -153,7 +138,7 @@
 						<td id="correctRatio"></td>
 					</tr>
 				</table>
-				<button onclick="resetLocalStorage();">リセット</button>
+				<a data-role="button" href="#" onclick="resetLocalStorage();">リセット</a>
 				<a data-role="button" href="#topPage">
 					閉じる
 				</a>
