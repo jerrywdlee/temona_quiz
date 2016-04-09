@@ -38,6 +38,7 @@
 		<script src="js/custom-scripting.js"></script>
 
 		<script src="js/quiz.js"></script>
+		<script src="js/create_quiz.js"></script>
 		<title>TEMONA Quiz</title>
 	</head>
 	<body>
@@ -88,6 +89,7 @@
 					面積が<br />
 					一番広いのは？
 				</h1>
+				<img src="img/vietnam.png" style="width: 350px">
 				<ul data-role="listview" data-inset="true" id="questionList">
 				<!-- data-inset="true" は左右空白を残す -->
 					<li><a href="#answerPage" id="1"></a>
@@ -151,6 +153,7 @@
 						<td id="correctRatio"></td>
 					</tr>
 				</table>
+				<button onclick="resetLocalStorage();">リセット</button>
 				<a data-role="button" href="#topPage">
 					閉じる
 				</a>

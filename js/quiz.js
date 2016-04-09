@@ -27,10 +27,17 @@ MYQUIZ.todofuken = [
     ["鹿児島県","9189"],["沖縄県", "2276"]
 ];
 
+quiz_text = [];
+$(document).ready(function(){
+  quiz_text = creatQuiz(); // in create_quiz.js
+});
+
+
 //スコアの初期化
 if(!localStorage.totalQuestion){
     localStorage.totalQuestion = 0;
     localStorage.correctAnswer = 0;
+    localStorage.timeUsed = 0;
 }
 
 //  =====▽▽この下にページごとの処理を記述します▽▽=====
@@ -127,6 +134,8 @@ $(document).on("pageinit", "#scorePage", function(){
     });
 });
 
+
+//  =============その他の関数====================
 //シャッフル関数
 function shuffle(array){
   var ary_length = array.length;
@@ -137,6 +146,18 @@ function shuffle(array){
     array[num_01] = array[num_02];
     array[num_02] = temp;
   }
+}
+
+function resetLocalStorage() {
+  //alert("clear")
+  //localStorage.clear();
+  var json_text = creatQuiz();
+  alert(json_text[1].ans)
+  alert(json_text[1].ans == json_text[1].choices[2])
+  alert(json_text[1].ans == json_text[1].choices[1])
+  localStorage.totalQuestion = 0;
+  localStorage.correctAnswer = 0;
+  localStorage.timeUsed = 0;
 }
 
 
