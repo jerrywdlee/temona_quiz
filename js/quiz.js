@@ -35,9 +35,6 @@ $(document).ready(function(){
 
 //スコアの初期化
 if(!localStorage.totalQuestion){
-    //localStorage.totalQuestion = 0;
-    //localStorage.correctAnswer = 0;
-    //localStorage.timeUsed = 0;
     resetLocalStorage();
 }
 
@@ -45,11 +42,12 @@ if(!localStorage.totalQuestion){
 
 //  ============ページ区切り[問題]============
 $(document).on("pageinit", "#questionPage", function(){
-
+    if (!timer) {
+      timeCount();//多重タイマー防止
+    }
    //画面表示時の処理
     $("#questionPage").on("pageshow", function() {
         var randNum = new Array(3);
-         timeCount() ;//セットタイマー
          setInterval(function(){showTime();}, 500);//時間表示
          if (!sessionStorage.quiz_id||sessionStorage.quiz_id >= quiz_text.length) {
            sessionStorage.quiz_id = 0; //もしクイズがなしまたはクイズが終わりのとき、一から繰り返す
@@ -57,29 +55,14 @@ $(document).on("pageinit", "#questionPage", function(){
          var tempQuiz = quiz_text[sessionStorage.quiz_id];
          sessionStorage.ans = tempQuiz.ans;//set answer
          $("#quiz_text").html(tempQuiz.text);
-         $(".quiz_img").attr("src","./img/quiz/"+tempQuiz.image);
+         if (tempQuiz.image) {
+           $(".quiz_img").attr("src","./img/quiz/"+tempQuiz.image);
+         }else {
+           $(".quiz_img").attr("src","./img/vietnam.png");
+         }
          $("#1").html(tempQuiz.choices[0]);
          $("#2").html(tempQuiz.choices[1]);
          $("#3").html(tempQuiz.choices[2]);
-
-
-        /*
-        //0から46までの重複のない整数を3つ取得
-        do{
-            for(var i = 0; i < randNum.length ; i++){
-                randNum[i] = Math.floor(Math.random() * 47);
-            }
-        }while(MYQUIZ.isDuplicate(randNum));
-        //問題を表示
-        $("#1").html(MYQUIZ.todofuken[randNum[0]][0]);
-        $("#2").html(MYQUIZ.todofuken[randNum[1]][0]);
-        $("#3").html(MYQUIZ.todofuken[randNum[2]][0]);
-
-        //都道府県番号をsessionStorageに保存
-        sessionStorage.randNum1 = randNum[0];
-        sessionStorage.randNum2 = randNum[1];
-        sessionStorage.randNum3 = randNum[2];
-          */
     });
     // when choien
     $("#questionList a").on("click", function() {
@@ -89,31 +72,14 @@ $(document).on("pageinit", "#questionPage", function(){
         //alert(sessionStorage.selectedAns);
         //alert(sessionStorage.selectedAns == sessionStorage.ans)// ===はfalse
     });
-    /*
-    //都道府県名の選択時の処理
-    $("#questionList a").on("click", function() {
-        var selectedId = $(this).attr("id");
-        sessionStorage.selectedNumber = sessionStorage["randNum" + selectedId];
-	//alert(sessionStorage.selectedNumber);
-    });
-    */
 });
-
-/*
-//配列内の値の重複を確認
-MYQUIZ.isDuplicate = function(array){
-    array.sort();
-    for(var i = 0; i < (array.length - 1); i++){
-        if(array[i] === array[i + 1]) return true;
-    }
-    return false;
-}
-*/
 //  ============ページ区切り[解答]============
 $(document).on("pageinit", "#answerPage", function(){
 
     //画面表示時の処理
     $("#answerPage").on("pageshow", function() {
+      //次の問題ボタンをリセット
+      $("#nextButton").html("次の問題").attr("href","#questionPage")
       //正誤の判定と表示
       if(sessionStorage.selectedAns == sessionStorage.ans){
           $("#judge").html("正解").css("color","green")/*.css("font-size","2em")*/;
@@ -126,36 +92,10 @@ $(document).on("pageinit", "#answerPage", function(){
       localStorage.totalQuestion++;
       //問題の前進
       sessionStorage.quiz_id++;
-
-      /*
-        var selectedNum = sessionStorage.selectedNumber;
-        var randNum = new Array(3);
-        randNum[0] = sessionStorage.randNum1;
-        randNum[1] = sessionStorage.randNum2;
-        randNum[2] = sessionStorage.randNum3;
-
-        var questionData = new Array(3);
-        for(var i = 0; i < questionData.length; i++){
-            questionData[i] = new Array(2);
-            questionData[i][0] = MYQUIZ.todofuken[randNum[i]][0];
-            questionData[i][1] = MYQUIZ.todofuken[randNum[i]][1];
-        }
-        questionData.sort(MYQUIZ.arraySort);
-        //正誤の判定と表示
-        if(questionData[0][0] === MYQUIZ.todofuken[selectedNum][0]){
-            $("#judge").html("正解").css("color","green");
-            localStorage.correctAnswer++;
-        }else{
-            $("#judge").html("ハズレ").css("color","red");
-        }
-
-        //ランキング表示
-        for(var i = 0; i < questionData.length; i++){
-            $("#todofuken" + (i+1) ).html(questionData[i][0]);
-            $("#areaSize" + (i+1) ).html(questionData[i][1] + "平方Km");
-        }
-        */
-
+      //最後の問題で
+      if (sessionStorage.quiz_id == quiz_text.length) {
+        $("#nextButton").html("スコア").attr("href","#scorePage")
+      }
     });
 });
 //2次元配列ソート(並べ替え)用の関数
@@ -164,14 +104,39 @@ MYQUIZ.arraySort = function(a, b){
 }
 //  ============ページ区切り[正解率]============
 $(document).on("pageinit", "#scorePage", function(){
-
    //画面表示時の処理
     $("#scorePage").on("pageshow", function() {
        $("#totalQuestion").html(localStorage.totalQuestion);
        $("#correctAnswer").html(localStorage.correctAnswer);
        var ratio = Math.floor((localStorage.correctAnswer / localStorage.totalQuestion) * 100);
        $("#correctRatio").html(ratio + "%");
+       $("#timeUsed").html(showTime(localStorage.timeUsed));
+       // ボタンの処理
+       $("#resetBtn").show();
+       $("#returnBtn").hide();
     });
+    //リセットのロジック
+    $("#resetBtn").on("click",function(){
+        resetLocalStorage();//点数のりせっと
+        resetSessionStorage();
+        timeStop();//タイマーのリセット
+        $("#totalQuestion").html(localStorage.totalQuestion);
+        $("#correctAnswer").html(localStorage.correctAnswer);
+        var ratio = Math.floor((localStorage.correctAnswer / localStorage.totalQuestion) * 100);
+        $("#correctRatio").html(ratio + "%");
+        $("#timeUsed").html(showTime(localStorage.timeUsed));
+        $(this).hide();
+        $("#returnBtn").show();
+        //閉じるボタンに変身、早すぎはいかん
+        //setTimeout(function() {
+          //$(this).html("閉じる").attr("id","").attr("href","#topPage")
+        //},500)
+
+        //window.location = "http://www.google.com";
+        //$("body").pagecontainer( "change", "#scorePage", { role: "dialog",reload:"true"} );
+
+        //change("#scorePage2")
+    })
 });
 
 
@@ -189,15 +154,14 @@ function shuffle(array){
 }
 //localStorageを空に
 function resetLocalStorage() {
-  //alert("clear")
-  //localStorage.clear();
-  //var quiz_text = creatQuiz();
-  //alert(quiz_text[1].ans)
-  //alert(quiz_text[1].ans == quiz_text[1].choices[2])
-  //alert(quiz_text[1].ans == quiz_text[1].choices[1])
   localStorage.totalQuestion = 0;
   localStorage.correctAnswer = 0;
   localStorage.timeUsed = 0;
+}
+function resetSessionStorage(){
+  sessionStorage.quiz_id = 0
+  sessionStorage.ans = null
+  sessionStorage.selectedAns = ""
 }
 // タイマー
 var timer
@@ -212,6 +176,7 @@ function timeCount() {
 function timeStop(){
   clearInterval(timer);
   localStorage.timeUsed = 0;
+  timer=null;
 }
 
 function showTime() {
@@ -219,6 +184,7 @@ function showTime() {
   var min = parseInt(localStorage.timeUsed/60);
   var timeStr = checkTime(min)+":"+checkTime(sec);
   $(".timer").html(timeStr);
+  return timeStr;
 }
 function checkTime(i) {
   if (i<10){i="0" + i}
