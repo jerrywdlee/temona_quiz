@@ -35,9 +35,10 @@ $(document).ready(function(){
 
 //スコアの初期化
 if(!localStorage.totalQuestion){
-    localStorage.totalQuestion = 0;
-    localStorage.correctAnswer = 0;
-    localStorage.timeUsed = 0;
+    //localStorage.totalQuestion = 0;
+    //localStorage.correctAnswer = 0;
+    //localStorage.timeUsed = 0;
+    resetLocalStorage();
 }
 
 //  =====▽▽この下にページごとの処理を記述します▽▽=====
@@ -50,6 +51,17 @@ $(document).on("pageinit", "#questionPage", function(){
         var randNum = new Array(3);
          timeCount() ;//セットタイマー
          setInterval(function(){showTime();}, 500);//時間表示
+         if (!sessionStorage.quiz_id||(sessionStorage.quiz_id+1) === quiz_text.length) {
+           sessionStorage.quiz_id = 0; //もしクイズがなしまたはクイズが終わりのとき、一から繰り返す
+         }
+         var tempQuiz = quiz_text[sessionStorage.quiz_id];
+         sessionStorage.ans = tempQuiz.ans;//set answer
+         $("#1").html(tempQuiz.choices[0]);
+         $("#2").html(tempQuiz.choices[1]);
+         $("#3").html(tempQuiz.choices[2]);
+
+
+        /*
         //0から46までの重複のない整数を3つ取得
         do{
             for(var i = 0; i < randNum.length ; i++){
@@ -65,15 +77,23 @@ $(document).on("pageinit", "#questionPage", function(){
         sessionStorage.randNum1 = randNum[0];
         sessionStorage.randNum2 = randNum[1];
         sessionStorage.randNum3 = randNum[2];
+          */
     });
-
+    // when choien
+    $("#questionList a").on("click", function() {
+        var selectedAns = $(this).html();
+        sessionStorage.selectedAns = selectedAns;
+        alert(sessionStorage.selectedAns);
+        alert(sessionStorage.selectedAns == sessionStorage.ans)
+    });
+    /*
     //都道府県名の選択時の処理
     $("#questionList a").on("click", function() {
         var selectedId = $(this).attr("id");
         sessionStorage.selectedNumber = sessionStorage["randNum" + selectedId];
 	//alert(sessionStorage.selectedNumber);
     });
-
+    */
 });
 
 //配列内の値の重複を確認
@@ -160,7 +180,7 @@ function resetLocalStorage() {
   localStorage.correctAnswer = 0;
   localStorage.timeUsed = 0;
 }
-
+// タイマー
 var timer
 function timeCount() {
   if (!localStorage.timeUsed) {
@@ -170,9 +190,9 @@ function timeCount() {
     localStorage.timeUsed++;
   }, 1000);
 }
-
 function timeStop(){
   clearInterval(timer);
+  localStorage.timeUsed = 0;
 }
 
 function showTime() {
