@@ -70,11 +70,30 @@
 				<ul data-role="listview" data-inset="true" id="questionList"　 data-type="horizontal">
 				<!-- data-inset="true" は左右空白を残す -->
 					<li><a href="#questionPage" style="font-size: 2em;text-align: center">スタート</a>
+					<li><button onclick='$("body").pagecontainer( "change", "#preparePage" );'>test</button>
 				</ul>
 			</div>
 			<div data-role="footer" data-position="fixed">
 				<h1>© Jerry Lee 2008-2016</h1>
 			</div>
+		</div>
+		<!--  ============================ページ区切り[準備]============================ -->
+		<div data-role="page" id="preparePage">
+			<!--
+			<div data-role="header">
+				<a href="#topPage" data-icon="home">トップ</a>
+				<h1 class="timer">問題</h1>
+				<a href="#scorePage" class="ui-btn ui-icon-search ui-btn-icon-right" data-rel="dialog" >スコア</a>
+			</div>
+			-->
+			<div data-role="content" style="text-align:center;">
+				<h1 style="text-align:center;font-size:12em" id="321"></h1>
+			</div>
+			<!--
+			<div data-role="footer" data-position="fixed">
+				<h6>テモナ☆ベトナム☆クイズ</h6>
+			</div>
+			-->
 		</div>
 		<!--  ============================ページ区切り[問題]============================ -->
 		<div data-role="page" id="questionPage">

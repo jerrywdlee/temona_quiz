@@ -25,7 +25,30 @@ if(!localStorage.totalQuestion){
 }
 
 //  =====▽▽この下にページごとの処理を記述します▽▽=====
-
+//  ============ページ区切り[準備]============
+$(document).on("pageinit", "#preparePage", function(){
+  //画面表示時の処理
+   $("#preparePage").on("pageshow", function() {
+     $("#321").html("3").css("color","Orange");
+     setTimeout(function() {
+       $("#321").fadeToggle("slow");
+     },200);
+     setTimeout(function() {
+       $("#321").html("2").css("color","OrangeRed").fadeToggle("slow");
+       $("#321").fadeToggle("slow");
+     },1200);
+     setTimeout(function() {
+       $("#321").html("1").css("color","Red").fadeToggle("slow");
+       $("#321").fadeToggle("slow");
+     },2600);
+     setTimeout(function() {
+       $("#321").html("<a href='#questionPage' style='text-decoration:none;color:Sienna'>"+"Start"+"</a>").fadeToggle("slow");
+     },3800);
+     //$("#321").on("click",function() {
+       //$("body").pagecontainer( "change", "#preparePage" );
+     //})
+   });
+});
 //  ============ページ区切り[問題]============
 $(document).on("pageinit", "#questionPage", function(){
    //画面表示時の処理
@@ -100,7 +123,7 @@ $(document).on("pageinit", "#scorePage", function(){
        $("#correctRatio").html(ratio + "%");
        $("#timeUsed").html(showTime(localStorage.timeUsed));
        // ボタンの処理
-       $("#resetBtn").hide();
+       //$("#resetBtn").hide();
        $("#returnBtn").hide();
        setTimeout(function() {
          $("#resetBtn").show();
