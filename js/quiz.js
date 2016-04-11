@@ -4,7 +4,7 @@
 
 //  ============アプリ共通変数の定義============
 
-quiz_num = 2;//出そうとする問題の数、問題総数超えてはならない
+quiz_num = 0;//出そうとする問題の数、問題総数超えてはならない
 quiz_text = [];
 $(document).ready(function(){
   quiz_text = creatQuiz(); // in create_quiz.js
@@ -47,9 +47,13 @@ $(document).on("pageinit", "#questionPage", function(){
            $(".quiz_img").attr("src","./img/vietnam.png");
          }
          shuffle(tempQuiz.choices);//選択肢をシャッフル
-         $("#1").html(tempQuiz.choices[0]);
-         $("#2").html(tempQuiz.choices[1]);
-         $("#3").html(tempQuiz.choices[2]);
+         for (var i = 0; i < tempQuiz.choices.length; i++) {
+           let temp_id = "#ch_" + i +"";
+           $(temp_id).html(tempQuiz.choices[i])
+         }
+         //$("#1").html(tempQuiz.choices[0]);
+         //$("#2").html(tempQuiz.choices[1]);
+         //$("#3").html(tempQuiz.choices[2]);
     });
     // when choien
     $("#questionList a").on("click", function() {
