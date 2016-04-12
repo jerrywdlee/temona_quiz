@@ -5,6 +5,7 @@
 //  ============アプリ共通変数の定義============
 
 quiz_num = 0;//出そうとする問題の数、問題総数超えてはならない
+quiz_time_min = 3;
 quiz_text = [];
 persion_list = [];
 $(document).ready(function(){
@@ -18,7 +19,8 @@ $(document).ready(function(){
   //念のため一回リセット
   resetLocalStorage();//点数のりせっと
   resetSessionStorage();
-  timeStop();//タイマーのリセット
+  //timeStop();//タイマーのリセット
+  countDownStop()
 });
 
 
@@ -68,11 +70,15 @@ $(document).on("pageinit", "#preparePage", function(){
 $(document).on("pageinit", "#questionPage", function(){
    //画面表示時の処理
     $("#questionPage").on("pageshow", function() {
-        if (!timer) {
-          timeCount();//多重タイマー防止
+        //if (!timer) {
+        //  timeCount();//多重タイマー防止
+        //}
+        if (!timer_down) {
+          timeCountDown();//多重タイマー防止
         }
         var randNum = new Array(3);
-         setInterval(function(){showTime();}, 500);//時間表示
+         //setInterval(function(){showTime(localStorage.timeUsed);}, 500);//時間表示
+         setInterval(function(){showTime(sessionStorage.countDown);}, 500);//時間表示
          if (!sessionStorage.quiz_id||sessionStorage.quiz_id >= quiz_text.length) {
            sessionStorage.quiz_id = 0; //もしクイズがなしまたはクイズが終わりのとき、一から繰り返す
          }
@@ -150,7 +156,8 @@ $(document).on("pageinit", "#scorePage", function(){
     $("#resetBtn").on("click",function(){
         resetLocalStorage();//点数のりせっと
         //resetSessionStorage();
-        timeStop();//タイマーのリセット
+        //timeStop();//タイマーのリセット
+        countDownStop()
         $("#totalQuestion").html(localStorage.totalQuestion);
         $("#correctAnswer").html(localStorage.correctAnswer);
         var ratio = Math.floor((localStorage.correctAnswer / localStorage.totalQuestion) * 100);
@@ -184,6 +191,7 @@ function resetSessionStorage(){
   sessionStorage.quiz_id = 0
   sessionStorage.ans = null
   sessionStorage.selectedAns = ""
+  sessionStorage.persion_id = 0
 }
 // タイマー
 var timer
@@ -201,13 +209,39 @@ function timeStop(){
   timer=null;
 }
 
-function showTime() {
-  var sec = parseInt(localStorage.timeUsed%60);
-  var min = parseInt(localStorage.timeUsed/60);
-  var timeStr = checkTime(min)+":"+checkTime(sec);
+
+//カウントダウン時計
+var timer_down
+function timeCountDown(){
+  if (!sessionStorage.countDown) {
+    sessionStorage.countDown = parseInt(quiz_time_min*60);
+  }
+  timer_down = setInterval(function(){
+    sessionStorage.countDown--;
+  }, 1000);
+}
+function countDownStop() {
+  clearInterval(timer_down);
+  sessionStorage.countDown = parseInt(quiz_time_min*60);
+  timer_down=null;
+}
+
+function showTime(time_sec) {
+  let sec = parseInt(time_sec%60);
+  let min = parseInt(time_sec/60);
+  let timeStr = checkTime(min)+":"+checkTime(sec);
   $(".timer").html(timeStr);
   return timeStr;
 }
+/*
+function showCountDown() {
+  let sec = parseInt(sessionStorage.countDown%60);
+  let min = parseInt(sessionStorage.countDown/60);
+  let timeStr = checkTime(min)+":"+checkTime(sec);
+  $(".timer").html(timeStr);
+  return timeStr;
+}*/
+
 function checkTime(i) {
   if (i<10){i="0" + i}
     return i
