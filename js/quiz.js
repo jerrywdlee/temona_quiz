@@ -5,7 +5,7 @@
 //  ============アプリ共通変数の定義============
 
 quiz_num = 0;//出そうとする問題の数、問題総数超えてはならない
-quiz_time_min = 3;
+quiz_time_min = 0.1;
 quiz_text = [];
 persion_list = [];
 $(document).ready(function(){
@@ -58,9 +58,13 @@ $(document).on("pageinit", "#preparePage", function(){
      },2600);
      setTimeout(function() {
        beep("high")
+       //let persion_temp = persion_list[sessionStorage.persion_id]
        $("#321").html("<a href='#questionPage' style='text-decoration:none;color:Sienna'>" +
-        persion_list[sessionStorage.persion_id]+ "</a>").css({"font-size":"10em"}).fadeToggle("slow");
+        persion_list[sessionStorage.persion_id]+ "</a>").css({"font-size":"12em"}).fadeToggle("slow");
      },3800);
+     setTimeout(function() {
+       $("body").pagecontainer( "change", "#questionPage" );
+     },4800)
      //$("#321").on("click",function() {
        //$("body").pagecontainer( "change", "#preparePage" );
      //})
@@ -73,12 +77,12 @@ $(document).on("pageinit", "#questionPage", function(){
         //if (!timer) {
         //  timeCount();//多重タイマー防止
         //}
-        if (!timer_down) {
-          timeCountDown();//多重タイマー防止
-        }
+        countDownStop();//多重タイマー防止
+        timeCountDown();
+        sessionStorage.selectedAns = "" //sessionStorageリセット
         var randNum = new Array(3);
          //setInterval(function(){showTime(localStorage.timeUsed);}, 500);//時間表示
-         setInterval(function(){showTime(sessionStorage.countDown);}, 500);//時間表示
+         setInterval(function(){showTime(sessionStorage.countDown,"#answerPage");}, 500);//カウントダウン時間表示
          if (!sessionStorage.quiz_id||sessionStorage.quiz_id >= quiz_text.length) {
            sessionStorage.quiz_id = 0; //もしクイズがなしまたはクイズが終わりのとき、一から繰り返す
          }
@@ -95,9 +99,6 @@ $(document).on("pageinit", "#questionPage", function(){
            let temp_id = "#ch_" + i +"";
            $(temp_id).html(tempQuiz.choices[i])
          }
-         //$("#1").html(tempQuiz.choices[0]);
-         //$("#2").html(tempQuiz.choices[1]);
-         //$("#3").html(tempQuiz.choices[2]);
     });
     // when choien
     $("#questionList a").on("click", function() {
@@ -113,14 +114,17 @@ $(document).on("pageinit", "#answerPage", function(){
 
     //画面表示時の処理
     $("#answerPage").on("pageshow", function() {
+      countDownStop();//カウントダウンストップ
       //次の問題ボタンをリセット
       $("#nextButton").html("次の問題").attr("href","#preparePage")
       //正誤の判定と表示
       if(sessionStorage.selectedAns == sessionStorage.ans){
-          $("#judge").html("正解").css("color","green")/*.css("font-size","2em")*/;
+          $("#judge").html("正解").css("color","green").css("font-size","4.5em");
           localStorage.correctAnswer++;
+      }else if (sessionStorage.selectedAns === "") {
+          $("#judge").html("時間切れ").css("color","OrangeRed").css("font-size","4em");
       }else{
-          $("#judge").html("ハズレ").css("color","red")/*.css("font-size","0.2em")*/;
+          $("#judge").html("ハズレ").css("color","red").css("font-size","4em");
       }
       $("#ans").html(sessionStorage.ans);
       //総解答数の更新
@@ -212,7 +216,7 @@ function timeStop(){
 
 //カウントダウン時計
 var timer_down
-function timeCountDown(){
+function timeCountDown(href){
   if (!sessionStorage.countDown) {
     sessionStorage.countDown = parseInt(quiz_time_min*60);
   }
@@ -226,11 +230,15 @@ function countDownStop() {
   timer_down=null;
 }
 
-function showTime(time_sec) {
+function showTime(time_sec,href) {
   let sec = parseInt(time_sec%60);
   let min = parseInt(time_sec/60);
   let timeStr = checkTime(min)+":"+checkTime(sec);
   $(".timer").html(timeStr);
+  if (sessionStorage.countDown <= 0) {
+    $("body").pagecontainer( "change", "#answerPage" );
+    //$("body").pagecontainer( "change", "href" ); //カウントダウン終了後自動切り替え
+  }
   return timeStr;
 }
 /*
