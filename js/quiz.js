@@ -4,11 +4,14 @@
 
 //  ============アプリ共通変数の定義============
 
-quiz_num = 2;//出そうとする問題の数、問題総数超えてはならない
+quiz_num = 0;//出そうとする問題の数、問題総数超えてはならない
 quiz_text = [];
+persion_list = [];
 $(document).ready(function(){
   quiz_text = creatQuiz(); // in create_quiz.js
+  persion_list = create_persion();// in create_persion.js
   shuffle(quiz_text);//問題をシャフル
+  shuffle(persion_list);
   if (quiz_num <= 0||quiz_num > quiz_text.length) {
     quiz_num = quiz_text.length;
   }
@@ -25,7 +28,42 @@ if(!localStorage.totalQuestion){
 }
 
 //  =====▽▽この下にページごとの処理を記述します▽▽=====
+//  ============ページ区切り[準備]============
+$(document).on("pageinit", "#preparePage", function(){
+  //画面表示時の処理
+   $("#preparePage").on("pageshow", function() {
 
+     if (!sessionStorage.persion_id||sessionStorage.persion_id >= persion_list.length) {
+       sessionStorage.persion_id = 0; //もしクイズがなしまたはクイズが終わりのとき、一から繰り返す
+     }
+     beep("low")
+     $("#321").html("3").css("color","Orange");
+     setTimeout(function() {
+
+       $("#321").fadeToggle("slow");
+     },200);
+     setTimeout(function() {
+       beep("low")
+       $("#321").html("2").css("color","OrangeRed").fadeToggle("slow");
+
+       $("#321").fadeToggle("slow");
+
+     },1200);
+     setTimeout(function() {
+       beep("low")
+       $("#321").html("1").css("color","Red").fadeToggle("slow");
+       $("#321").fadeToggle("slow");
+     },2600);
+     setTimeout(function() {
+       beep("high")
+       $("#321").html("<a href='#questionPage' style='text-decoration:none;color:Sienna'>" +
+        persion_list[sessionStorage.persion_id]+ "</a>").css({"font-size":"10em"}).fadeToggle("slow");
+     },3800);
+     //$("#321").on("click",function() {
+       //$("body").pagecontainer( "change", "#preparePage" );
+     //})
+   });
+});
 //  ============ページ区切り[問題]============
 $(document).on("pageinit", "#questionPage", function(){
    //画面表示時の処理
@@ -47,9 +85,13 @@ $(document).on("pageinit", "#questionPage", function(){
            $(".quiz_img").attr("src","./img/vietnam.png");
          }
          shuffle(tempQuiz.choices);//選択肢をシャッフル
-         $("#1").html(tempQuiz.choices[0]);
-         $("#2").html(tempQuiz.choices[1]);
-         $("#3").html(tempQuiz.choices[2]);
+         for (var i = 0; i < tempQuiz.choices.length; i++) {
+           let temp_id = "#ch_" + i +"";
+           $(temp_id).html(tempQuiz.choices[i])
+         }
+         //$("#1").html(tempQuiz.choices[0]);
+         //$("#2").html(tempQuiz.choices[1]);
+         //$("#3").html(tempQuiz.choices[2]);
     });
     // when choien
     $("#questionList a").on("click", function() {
@@ -66,7 +108,7 @@ $(document).on("pageinit", "#answerPage", function(){
     //画面表示時の処理
     $("#answerPage").on("pageshow", function() {
       //次の問題ボタンをリセット
-      $("#nextButton").html("次の問題").attr("href","#questionPage")
+      $("#nextButton").html("次の問題").attr("href","#preparePage")
       //正誤の判定と表示
       if(sessionStorage.selectedAns == sessionStorage.ans){
           $("#judge").html("正解").css("color","green")/*.css("font-size","2em")*/;
@@ -77,6 +119,8 @@ $(document).on("pageinit", "#answerPage", function(){
       $("#ans").html(sessionStorage.ans);
       //総解答数の更新
       localStorage.totalQuestion++;
+      //回答者の前進
+      sessionStorage.persion_id++;
       //問題の前進
       sessionStorage.quiz_id++;
       //最後の問題で
@@ -96,7 +140,7 @@ $(document).on("pageinit", "#scorePage", function(){
        $("#correctRatio").html(ratio + "%");
        $("#timeUsed").html(showTime(localStorage.timeUsed));
        // ボタンの処理
-       $("#resetBtn").hide();
+       //$("#resetBtn").hide();
        $("#returnBtn").hide();
        setTimeout(function() {
          $("#resetBtn").show();

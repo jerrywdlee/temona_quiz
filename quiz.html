@@ -38,7 +38,10 @@
 		<script src="js/custom-scripting.js"></script>
 
 		<script src="js/quiz.js"></script>
+		<script src="js/media.js"></script>
 		<script src="js/create_quiz.js"></script>
+		<script src="js/create_persion.js"></script>
+
 		<title>TEMONA Quiz</title>
 	</head>
 	<body>
@@ -62,18 +65,40 @@
 			<div data-role="content">
 				<div style="text-align:center;">
 
-					<h1>テモナ☆ベトナム☆クイズ</h1>
+					<h1>クイズ☆オフ☆ルーキー</h1>
 					<img src="img/vietnam.png" style="width: 350px">
 
 				</div>
 
 				<ul data-role="listview" data-inset="true" id="questionList"　 data-type="horizontal">
 				<!-- data-inset="true" は左右空白を残す -->
+					<li><a href="#preparePage" style="font-size: 2em;text-align: center">スタート</a></li>
+					<li><button onclick='beep("low")'>test</button>
+					<!--
 					<li><a href="#questionPage" style="font-size: 2em;text-align: center">スタート</a>
+					<li><button onclick='$("body").pagecontainer( "change", "#preparePage" );'>test</button>
+					-->
 				</ul>
 			</div>
 			<div data-role="footer" data-position="fixed">
 				<h1>© Jerry Lee 2008-2016</h1>
+			</div>
+		</div>
+		<!--  ============================ページ区切り[準備]============================ -->
+		<div data-role="page" id="preparePage">
+
+			<div data-role="header">
+				<a href="#topPage" data-icon="home">トップ</a>
+				<h1 >クイズ☆オフ☆ルーキー</h1>
+				<a href="#scorePage" class="ui-btn ui-icon-search ui-btn-icon-right" data-rel="dialog" >スコア</a>
+			</div>
+
+			<div data-role="content" style="text-align:center;">
+				<h1 style="text-align:center;font-size:14em" id="321"></h1>
+			</div>
+
+			<div data-role="footer" data-position="fixed">
+				<h6>© Jerry Lee 2008-2016</h6>
 			</div>
 		</div>
 		<!--  ============================ページ区切り[問題]============================ -->
@@ -89,13 +114,14 @@
 				<img src="img/vietnam.png" style="height:240px" class="quiz_img">
 				<ul data-role="listview" data-inset="true" id="questionList">
 				<!-- data-inset="true" は左右空白を残す -->
-					<li><a href="#answerPage" id="1"></a>
-					<li><a href="#answerPage" id="2"></a>
-					<li><a href="#answerPage" id="3"></a>
+					<li><a href="#answerPage" id="ch_0"></a>
+					<li><a href="#answerPage" id="ch_1"></a>
+					<li><a href="#answerPage" id="ch_2"></a>
+					<li><a href="#answerPage" id="ch_3"></a>
 				</ul>
 			</div>
 			<div data-role="footer" data-position="fixed">
-				<h6>テモナ☆ベトナム☆クイズ</h6>
+				<h6>クイズ☆オフ☆ルーキー</h6>
 			</div>
 		</div>
 		<!--  ============================ページ区切り[解答]============================ -->
@@ -115,9 +141,41 @@
 			</p>
 			</div>
 			<div data-role="footer" data-position="fixed">
-				<h6>テモナ☆ベトナム☆クイズ</h6>
+				<h6>クイズ☆オフ☆ルーキー</h6>
 			</div>
 		</div>
+		<!--  ============================ページ区切り[質問一覧]============================ -->
+		<div data-role="page" id="showQuesPage">
+<!--
+			<div data-role="header">
+				<h1>質問一覧</h1>
+			</div>
+
+			<div data-role="content">
+				<table>
+					<tr>
+						<td style="width: 6em;">解答数</td>
+						<td id="totalQuestion"></td>
+					</tr>
+					<tr>
+						<td>正解数</td>
+						<td id="correctAnswer"></td>
+					</tr>
+					<tr>
+						<td>正解率</td>
+						<td id="correctRatio"></td>
+					</tr>
+					<tr>
+						<td>時間</td>
+						<td id="timeUsed"></td>
+					</tr>
+				</table>
+				<a data-role="button" id="resetBtn" href="#">リセット</a>
+				<a data-role="button" id="returnBtn" href="#topPage" disabled>閉じる</a>
+			</div>
+				-->
+		</div>
+
 		<!--  ============================ページ区切り[正解率]============================ -->
 		<div data-role="page" id="scorePage">
 
