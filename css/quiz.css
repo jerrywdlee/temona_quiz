@@ -3,7 +3,10 @@
    class="areaSize"の要素に対して適用
    =========================================== */
 .areaSize{
-	font-size: 0.7em; 
+	font-size: 0.7em;
 	color: maroon;
 	text-align: right;
+}
+.title,.quiz_text,td,a{
+	color: rgb(111, 82, 8);
 }

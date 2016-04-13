@@ -5,7 +5,7 @@
 //  ============アプリ共通変数の定義============
 
 quiz_num = 0;//出そうとする問題の数、問題総数超えてはならない
-quiz_time_min = 0.1;
+quiz_time_min = 2;
 quiz_text = [];
 persion_list = [];
 $(document).ready(function(){
@@ -86,9 +86,10 @@ $(document).on("pageinit", "#questionPage", function(){
          if (!sessionStorage.quiz_id||sessionStorage.quiz_id >= quiz_text.length) {
            sessionStorage.quiz_id = 0; //もしクイズがなしまたはクイズが終わりのとき、一から繰り返す
          }
-         var tempQuiz = quiz_text[sessionStorage.quiz_id];
+         tempQuiz = quiz_text[sessionStorage.quiz_id];
          sessionStorage.ans = tempQuiz.ans;//set answer
-         $("#quiz_text").html(tempQuiz.text);
+         sessionStorage.name = tempQuiz.name;
+         $(".quiz_text").html(tempQuiz.text+'（ By：'+sessionStorage.name+' ）');
          if (tempQuiz.image) {
            $(".quiz_img").attr("src","./img/quiz/"+tempQuiz.image);
          }else {
@@ -126,6 +127,7 @@ $(document).on("pageinit", "#answerPage", function(){
       }else{
           $("#judge").html("ハズレ").css("color","red").css("font-size","4em");
       }
+      $(".quiz_text").html(tempQuiz.text+'（ By：'+sessionStorage.name+' ）');
       $("#ans").html(sessionStorage.ans);
       //総解答数の更新
       localStorage.totalQuestion++;
@@ -167,7 +169,7 @@ $(document).on("pageinit", "#scorePage", function(){
         var ratio = Math.floor((localStorage.correctAnswer / localStorage.totalQuestion) * 100);
         $("#correctRatio").html(ratio + "%");
         $("#timeUsed").html(showTime(localStorage.timeUsed));
-        $(this).hide();
+        $("#resetBtn").hide();
         $("#returnBtn").show();
     })
 });

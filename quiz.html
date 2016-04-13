@@ -51,7 +51,7 @@
 			<div data-role="header">
 				<a href="#" class="requestfullscreen" data-icon="info" data-rel="dialog" >全画面</a>
 
-				<h1>TEMONA Quiz</h1>
+				<h1 >TEMONA Quiz</h1>
 				<a href="#scorePage" class="ui-btn ui-icon-search ui-btn-icon-right" data-rel="dialog" >スコア</a>
 				<div data-role="navbar" data-iconpos="left">
 
@@ -65,7 +65,7 @@
 			<div data-role="content">
 				<div style="text-align:center;">
 
-					<h1>クイズ☆オフ☆ルーキー</h1>
+					<h1 class="title">クイズ☆オフ☆ルーキー</h1>
 					<img src="img/vietnam.png" style="width: 350px">
 
 				</div>
@@ -82,7 +82,7 @@
 				</ul>
 			</div>
 			<div data-role="footer" data-position="fixed">
-				<h1>© Jerry Lee 2008-2016</h1>
+				<h1 >© Jerry Lee 2008-2016</h1>
 			</div>
 		</div>
 		<!--  ============================ページ区切り[準備]============================ -->
@@ -95,7 +95,7 @@
 			</div>
 
 			<div data-role="content" style="text-align:center;">
-				<h1 style="text-align:center;font-size:14em" id="321"></h1>
+				<h1 style="text-align:center;font-size:16em" id="321"></h1>
 			</div>
 
 			<div data-role="footer" data-position="fixed">
@@ -106,18 +106,18 @@
 		<div data-role="page" id="questionPage">
 			<div data-role="header">
 				<a href="#topPage" data-icon="home">トップ</a>
-				<h1 class="timer">問題</h1>
+				<h1 class="timer" >問題</h1>
 				<a href="#scorePage" class="ui-btn ui-icon-search ui-btn-icon-right" data-rel="dialog" >スコア</a>
 			</div>
 			<div data-role="content" style="text-align:center;">
-				<h1 style="text-align:center;" id="quiz_text">
+				<h1 style="text-align:center;" id="quiz_text" class="quiz_text">
 				</h1>
 				<img src="img/vietnam.png" style="height:240px" class="quiz_img">
 				<ul data-role="listview" data-inset="true" id="questionList">
 				<!-- data-inset="true" は左右空白を残す -->
-					<li><a href="#answerPage" id="ch_0"></a>
-					<li><a href="#answerPage" id="ch_1"></a>
-					<li><a href="#answerPage" id="ch_2"></a>
+					<li><a href="#answerPage" id="ch_0" class="title"></a>
+					<li><a href="#answerPage" id="ch_1" class="title"></a>
+					<li><a href="#answerPage" id="ch_2" class="title"></a>
 					<!--
 					<li><a href="#answerPage" id="ch_3"></a>
 					-->
@@ -137,14 +137,15 @@
 			<div data-role="content" style="text-align:center;">
 				<h1 style="text-align:center;" id="judge"></h1>
 				<img src="img/vietnam.png" style="height: 240px" class="quiz_img">
-				<h3 >正解：<span id="ans"></span></h3>
+				<h3 class="title">問題：<span class="quiz_text"></span></h3>
+				<h3 class="title">正解：<span id="ans"></span></h3>
 
 				<p>
 					<a data-role="button" id="nextButton" href="#questionPage">次の問題</a>
 			</p>
 			</div>
 			<div data-role="footer" data-position="fixed">
-				<h6>クイズ☆オフ☆ルーキー</h6>
+				<h6 >クイズ☆オフ☆ルーキー</h6>
 			</div>
 		</div>
 		<!--  ============================ページ区切り[質問一覧]============================ -->
@@ -189,7 +190,7 @@
 			<div data-role="content">
 				<table>
 					<tr>
-						<td style="width: 6em;">解答数</td>
+						<td style="width: 6em;" >解答数</td>
 						<td id="totalQuestion"></td>
 					</tr>
 					<tr>
