@@ -51,7 +51,7 @@
 			<div data-role="header">
 				<a href="#" class="requestfullscreen" data-icon="info" data-rel="dialog" >全画面</a>
 
-				<h1>TEMONA Quiz</h1>
+				<h1 style="font-size:2em;padding: 5px;">TEMONA Quiz</h1>
 				<a href="#scorePage" class="ui-btn ui-icon-search ui-btn-icon-right" data-rel="dialog" >スコア</a>
 				<div data-role="navbar" data-iconpos="left">
 
@@ -65,7 +65,7 @@
 			<div data-role="content">
 				<div style="text-align:center;">
 
-					<h1>クイズ☆オフ☆ルーキー</h1>
+					<h1 class="title" style="font-size:3em;padding: 5px;">クイズ☆オフ☆ルーキー</h1>
 					<img src="img/vietnam.png" style="width: 350px">
 
 				</div>
@@ -73,15 +73,15 @@
 				<ul data-role="listview" data-inset="true" id="questionList"　 data-type="horizontal">
 				<!-- data-inset="true" は左右空白を残す -->
 					<li><a href="#preparePage" style="font-size: 2em;text-align: center">スタート</a></li>
-					<li><button onclick='beep("low")'>test</button>
 					<!--
-					<li><a href="#questionPage" style="font-size: 2em;text-align: center">スタート</a>
-					<li><button onclick='$("body").pagecontainer( "change", "#preparePage" );'>test</button>
-					-->
+					<li><button onclick='play_bgm()'>play</button>
+					<li><button onclick='stop_bgm()'>stop_bgm</button>
+					<li><button onclick="judge_beep('time_up')">beep</button></li>
+				-->
 				</ul>
 			</div>
 			<div data-role="footer" data-position="fixed">
-				<h1>© Jerry Lee 2008-2016</h1>
+				<h1 >© Jerry Lee 2008-2016</h1>
 			</div>
 		</div>
 		<!--  ============================ページ区切り[準備]============================ -->
@@ -89,12 +89,13 @@
 
 			<div data-role="header">
 				<a href="#topPage" data-icon="home">トップ</a>
-				<h1 >クイズ☆オフ☆ルーキー</h1>
+				<h1 style="font-size:2em;padding: 5px;">クイズ☆オフ☆ルーキー</h1>
 				<a href="#scorePage" class="ui-btn ui-icon-search ui-btn-icon-right" data-rel="dialog" >スコア</a>
 			</div>
 
 			<div data-role="content" style="text-align:center;">
-				<h1 style="text-align:center;font-size:14em" id="321"></h1>
+				<h2 id="ques_num"></h2>
+				<h1 style="text-align:center;" id="321"></h1>
 			</div>
 
 			<div data-role="footer" data-position="fixed">
@@ -103,21 +104,23 @@
 		</div>
 		<!--  ============================ページ区切り[問題]============================ -->
 		<div data-role="page" id="questionPage">
-			<div data-role="header">
-				<a href="#topPage" data-icon="home">トップ</a>
-				<h1 class="timer">問題</h1>
+			<div data-role="header" >
+				<a href="#topPage" data-icon="home" >トップ</a>
+				<h1 class="timer" style="font-size:5em;padding: 5px;" >問題</h1>
 				<a href="#scorePage" class="ui-btn ui-icon-search ui-btn-icon-right" data-rel="dialog" >スコア</a>
 			</div>
 			<div data-role="content" style="text-align:center;">
-				<h1 style="text-align:center;" id="quiz_text">
-				</h1>
+				<h1 style="text-align:center;padding:-5px;" id="quiz_text" class="quiz_text"></h1>
+				<h2 style="padding:-5px;text-align:center;" class="name"></h2>
 				<img src="img/vietnam.png" style="height:240px" class="quiz_img">
 				<ul data-role="listview" data-inset="true" id="questionList">
 				<!-- data-inset="true" は左右空白を残す -->
-					<li><a href="#answerPage" id="ch_0"></a>
-					<li><a href="#answerPage" id="ch_1"></a>
-					<li><a href="#answerPage" id="ch_2"></a>
+					<li><a href="#answerPage" id="ch_0"  style="font-size:3em;"></a>
+					<li><a href="#answerPage" id="ch_1"  style="font-size:3em;"></a>
+					<li><a href="#answerPage" id="ch_2"  style="font-size:3em;"></a>
+					<!--
 					<li><a href="#answerPage" id="ch_3"></a>
+					-->
 				</ul>
 			</div>
 			<div data-role="footer" data-position="fixed">
@@ -128,20 +131,21 @@
 		<div data-role="page" id="answerPage">
 			<div data-role="header">
 				<a href="#topPage" data-icon="home">トップ</a>
-				<h1 class="timer">解答</h1>
+				<h1 style="font-size:2em;padding: 5px;">解答</h1>
 				<a href="#scorePage" class="ui-btn ui-icon-search ui-btn-icon-right" data-rel="dialog" >スコア</a>
 			</div>
 			<div data-role="content" style="text-align:center;">
 				<h1 style="text-align:center;" id="judge"></h1>
 				<img src="img/vietnam.png" style="height: 240px" class="quiz_img">
-				<h3 >正解：<span id="ans"></span></h3>
+				<h3 ><span style="font-size:3em;color: rgb(111, 82, 8);">問題：</span><span class="quiz_text" ></span></h3>
+				<h3 class="title" style="font-size:5em;">正解：<span id="ans"></span></h3>
 
 				<p>
-					<a data-role="button" id="nextButton" href="#questionPage">次の問題</a>
+					<a data-role="button" id="nextButton" href="#questionPage" style="font-size:2em;">次の問題</a>
 			</p>
 			</div>
 			<div data-role="footer" data-position="fixed">
-				<h6>クイズ☆オフ☆ルーキー</h6>
+				<h6 >クイズ☆オフ☆ルーキー</h6>
 			</div>
 		</div>
 		<!--  ============================ページ区切り[質問一覧]============================ -->
@@ -186,7 +190,7 @@
 			<div data-role="content">
 				<table>
 					<tr>
-						<td style="width: 6em;">解答数</td>
+						<td style="width: 6em;" >解答数</td>
 						<td id="totalQuestion"></td>
 					</tr>
 					<tr>
@@ -197,10 +201,12 @@
 						<td>正解率</td>
 						<td id="correctRatio"></td>
 					</tr>
+					<!--
 					<tr>
 						<td>時間</td>
 						<td id="timeUsed"></td>
 					</tr>
+				-->
 				</table>
 				<a data-role="button" id="resetBtn" href="#">リセット</a>
 				<a data-role="button" id="returnBtn" href="#topPage" disabled>閉じる</a>
