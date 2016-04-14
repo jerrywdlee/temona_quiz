@@ -7,6 +7,7 @@
 	color: maroon;
 	text-align: right;
 }
-.title,.quiz_text,td,a{
+.title,.quiz_text,td,a,.name{
+	font-size: 3em;
 	color: rgb(111, 82, 8);
 }

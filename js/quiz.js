@@ -5,7 +5,7 @@
 //  ============アプリ共通変数の定義============
 
 quiz_num = 0;//出そうとする問題の数、問題総数超えてはならない
-quiz_time_min = 2;
+quiz_time_min = 1.5;
 quiz_text = [];
 persion_list = [];
 $(document).ready(function(){
@@ -39,28 +39,28 @@ $(document).on("pageinit", "#preparePage", function(){
        sessionStorage.persion_id = 0; //もしクイズがなしまたはクイズが終わりのとき、一から繰り返す
      }
      beep("low")
-     $("#321").html("3").css("color","Orange");
+     $("#321").html("3").css({"font-size":"20em","color":"Orange"});
      setTimeout(function() {
 
        $("#321").fadeToggle("slow");
      },200);
      setTimeout(function() {
        beep("low")
-       $("#321").html("2").css("color","OrangeRed").fadeToggle("slow");
+       $("#321").html("2").css({"font-size":"20em","color":"OrangeRed"}).fadeToggle("slow");
 
        $("#321").fadeToggle("slow");
 
      },1200);
      setTimeout(function() {
        beep("low")
-       $("#321").html("1").css("color","Red").fadeToggle("slow");
+       $("#321").html("1").css({"font-size":"20em","color":"Red"}).fadeToggle("slow");
        $("#321").fadeToggle("slow");
      },2600);
      setTimeout(function() {
        beep("high")
        //let persion_temp = persion_list[sessionStorage.persion_id]
        $("#321").html("<a href='#questionPage' style='text-decoration:none;color:Sienna'>" +
-        persion_list[sessionStorage.persion_id]+ "</a>").css({"font-size":"12em"}).fadeToggle("slow");
+        persion_list[sessionStorage.persion_id]+ "</a>").css({"font-size":"8em"}).fadeToggle("slow");
      },3800);
      setTimeout(function() {
        $("body").pagecontainer( "change", "#questionPage" );
@@ -89,7 +89,8 @@ $(document).on("pageinit", "#questionPage", function(){
          tempQuiz = quiz_text[sessionStorage.quiz_id];
          sessionStorage.ans = tempQuiz.ans;//set answer
          sessionStorage.name = tempQuiz.name;
-         $(".quiz_text").html(tempQuiz.text+'（ By：'+sessionStorage.name+' ）');
+         $(".quiz_text").html(tempQuiz.text);
+         $(".name").html('（ By：'+sessionStorage.name+' ）');
          if (tempQuiz.image) {
            $(".quiz_img").attr("src","./img/quiz/"+tempQuiz.image);
          }else {
