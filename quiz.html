@@ -73,12 +73,11 @@
 				<ul data-role="listview" data-inset="true" id="questionList"　 data-type="horizontal">
 				<!-- data-inset="true" は左右空白を残す -->
 					<li><a href="#preparePage" style="font-size: 2em;text-align: center">スタート</a></li>
-					<li><button onclick='beep("low")'>test</button>
 					<!--
-					<li><a href="#questionPage" style="font-size: 2em;text-align: center">スタート</a>
-					-->
-					<li><button onclick='$("body").pagecontainer( "change", "#answerPage" );'>test</button>
-
+					<li><button onclick='play_bgm()'>play</button>
+					<li><button onclick='stop_bgm()'>stop_bgm</button>
+					<li><button onclick="judge_beep('time_up')">beep</button></li>
+				-->
 				</ul>
 			</div>
 			<div data-role="footer" data-position="fixed">
@@ -95,6 +94,7 @@
 			</div>
 
 			<div data-role="content" style="text-align:center;">
+				<h2 id="ques_num"></h2>
 				<h1 style="text-align:center;" id="321"></h1>
 			</div>
 
@@ -201,10 +201,12 @@
 						<td>正解率</td>
 						<td id="correctRatio"></td>
 					</tr>
+					<!--
 					<tr>
 						<td>時間</td>
 						<td id="timeUsed"></td>
 					</tr>
+				-->
 				</table>
 				<a data-role="button" id="resetBtn" href="#">リセット</a>
 				<a data-role="button" id="returnBtn" href="#topPage" disabled>閉じる</a>

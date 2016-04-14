@@ -5,7 +5,7 @@
 //  ============アプリ共通変数の定義============
 
 quiz_num = 0;//出そうとする問題の数、問題総数超えてはならない
-quiz_time_min = 1.5;
+quiz_time_min = 0.15;
 quiz_text = [];
 persion_list = [];
 $(document).ready(function(){
@@ -34,14 +34,12 @@ if(!localStorage.totalQuestion){
 $(document).on("pageinit", "#preparePage", function(){
   //画面表示時の処理
    $("#preparePage").on("pageshow", function() {
-
      if (!sessionStorage.persion_id||sessionStorage.persion_id >= persion_list.length) {
        sessionStorage.persion_id = 0; //もしクイズがなしまたはクイズが終わりのとき、一から繰り返す
      }
      beep("low")
      $("#321").html("3").css({"font-size":"20em","color":"Orange"});
      setTimeout(function() {
-
        $("#321").fadeToggle("slow");
      },200);
      setTimeout(function() {
@@ -59,11 +57,15 @@ $(document).on("pageinit", "#preparePage", function(){
      setTimeout(function() {
        beep("high")
        //let persion_temp = persion_list[sessionStorage.persion_id]
+       $("#ques_num").html("第 "+(parseInt(sessionStorage.quiz_id)+1)+" 問").css({"font-size":"4em","color":"Sienna"})
        $("#321").html("<a href='#questionPage' style='text-decoration:none;color:Sienna'>" +
-        persion_list[sessionStorage.persion_id]+ "</a>").css({"font-size":"8em"}).fadeToggle("slow");
+        persion_list[sessionStorage.persion_id]+ "</a>").css({"font-size":"6em"}).fadeToggle("slow");
      },3800);
      setTimeout(function() {
        $("body").pagecontainer( "change", "#questionPage" );
+       $("#ques_num").html("");
+       $("#123").html("");
+       $("#judge").html("");//問題文の一部もリセット
      },4800)
      //$("#321").on("click",function() {
        //$("body").pagecontainer( "change", "#preparePage" );
@@ -74,11 +76,14 @@ $(document).on("pageinit", "#preparePage", function(){
 $(document).on("pageinit", "#questionPage", function(){
    //画面表示時の処理
     $("#questionPage").on("pageshow", function() {
+
         //if (!timer) {
         //  timeCount();//多重タイマー防止
         //}
         countDownStop();//多重タイマー防止
         timeCountDown();
+        countDownFlag = true;//5秒時のカウントダウン用フラグ
+        //console.log(countDownFlag);
         sessionStorage.selectedAns = "" //sessionStorageリセット
         var randNum = new Array(3);
          //setInterval(function(){showTime(localStorage.timeUsed);}, 500);//時間表示
@@ -117,16 +122,21 @@ $(document).on("pageinit", "#answerPage", function(){
     //画面表示時の処理
     $("#answerPage").on("pageshow", function() {
       countDownStop();//カウントダウンストップ
+
       //次の問題ボタンをリセット
       $("#nextButton").html("次の問題").attr("href","#preparePage")
       //正誤の判定と表示
+      //console.log(sessionStorage.selectedAns);
       if(sessionStorage.selectedAns == sessionStorage.ans){
           $("#judge").html("正解").css("color","green").css("font-size","4.5em");
+          judge_beep("right");
           localStorage.correctAnswer++;
       }else if (sessionStorage.selectedAns === "") {
           $("#judge").html("時間切れ").css("color","OrangeRed").css("font-size","4em");
+          judge_beep("time_up");
       }else{
           $("#judge").html("ハズレ").css("color","red").css("font-size","4em");
+          judge_beep("wrong");
       }
       $(".quiz_text").html(tempQuiz.text+'（ By：'+sessionStorage.name+' ）');
       $("#ans").html(sessionStorage.ans);
@@ -220,9 +230,10 @@ function timeStop(){
 //カウントダウン時計
 var timer_down
 function timeCountDown(href){
-  if (!sessionStorage.countDown) {
+  if (!sessionStorage.countDown||sessionStorage.countDown == 0) {
     sessionStorage.countDown = parseInt(quiz_time_min*60);
   }
+  play_bgm();
   timer_down = setInterval(function(){
     sessionStorage.countDown--;
   }, 1000);
@@ -231,6 +242,8 @@ function countDownStop() {
   clearInterval(timer_down);
   sessionStorage.countDown = parseInt(quiz_time_min*60);
   timer_down=null;
+  stop_warn();
+  stop_bgm();
 }
 
 function showTime(time_sec,href) {
@@ -238,8 +251,16 @@ function showTime(time_sec,href) {
   let min = parseInt(time_sec/60);
   let timeStr = checkTime(min)+":"+checkTime(sec);
   $(".timer").html(timeStr);
+  if (sessionStorage.countDown <= 4 && countDownFlag == true) { //5秒若干長い
+    warn_beep();
+    fade_bgm();
+    countDownFlag = false;
+  }
   if (sessionStorage.countDown <= 0) {
+    stop_bgm();
+    stop_warn();
     $("body").pagecontainer( "change", "#answerPage" );
+    sessionStorage.countDown = parseInt(quiz_time_min*60);
     //$("body").pagecontainer( "change", "href" ); //カウントダウン終了後自動切り替え
   }
   return timeStr;
