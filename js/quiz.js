@@ -5,7 +5,7 @@
 //  ============アプリ共通変数の定義============
 
 quiz_num = 0;//出そうとする問題の数、問題総数超えてはならない
-quiz_time_min = 0.15;
+quiz_time_min = 0.5;
 quiz_text = [];
 persion_list = [];
 $(document).ready(function(){
