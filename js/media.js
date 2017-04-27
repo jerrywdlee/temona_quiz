@@ -31,6 +31,7 @@ function play_bgm() {
   bgm = new Audio();
   bgm.src = "./media/orpheus_in_the_underworld.mp3";//htmlの相対パス
   bgm.loop = true;
+  bgm.volume = 0.7;
   bgm.play();
 }
 function stop_bgm(){
